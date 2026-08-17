@@ -1,0 +1,49 @@
+services:
+  - type: web
+    name: talent-mirror-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    disk:
+      name: talent-mirror-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: DATABASE_URL
+        value: sqlite:////var/data/talent_mirror.db
+      - key: STORAGE_BACKEND
+        value: local
+      - key: STORAGE_LOCAL_PATH
+        value: /var/data/resumes
+      - key: APP_ENV
+        value: production
+      - key: INHIRE_AUTH_BASE_URL
+        value: https://auth.inhire.app
+      - key: INHIRE_API_BASE_URL
+        value: https://api.inhire.app
+      - key: INHIRE_LOGIN_ENDPOINT
+        value: /login
+      - key: INHIRE_JOBS_ENDPOINT
+        value: /jobs/paginated/lean
+      - key: AZURE_DEVOPS_ORG_URL
+        value: https://db1global.visualstudio.com
+      - key: AZURE_DEVOPS_TEAM
+        value: Aquisição de Talentos Team
+      # Valores sensiveis: preencher manualmente no dashboard do Render
+      # (Environment), nunca aqui no repositorio.
+      - key: INHIRE_EMAIL
+        sync: false
+      - key: INHIRE_PASSWORD
+        sync: false
+      - key: INHIRE_TENANT
+        sync: false
+      - key: AZURE_DEVOPS_PROJECT
+        sync: false
+      - key: AZURE_DEVOPS_PAT
+        sync: false
+      - key: APP_ACCESS_PASSWORD
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false

@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.venv/
+venv/
+.env
+**/data/resumes/
+*.db
+*.log
+
+node_modules/
+dist/
+.vite/
+
+.vscode/*
+!.vscode/extensions.json
