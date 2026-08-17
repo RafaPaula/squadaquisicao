@@ -6,17 +6,17 @@ services:
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     plan: free
-    disk:
-      name: talent-mirror-data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
+      # Sem disco persistente no plano free: banco e arquivos ficam no
+      # filesystem efemero do container (path relativo ao rootDir), e se
+      # perdem a cada reinicio/redeploy do servico. Rodar o backfill de
+      # novo (POST /sync/backfill) repopula a partir da inHire.
       - key: DATABASE_URL
-        value: sqlite:////var/data/talent_mirror.db
+        value: sqlite:///./talent_mirror.db
       - key: STORAGE_BACKEND
         value: local
       - key: STORAGE_LOCAL_PATH
-        value: /var/data/resumes
+        value: ./data/resumes
       - key: APP_ENV
         value: production
       - key: INHIRE_AUTH_BASE_URL
